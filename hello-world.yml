@@ -1,0 +1,14 @@
+- hosts: all
+  gather_facts: true
+  become: true
+  become_method: sudo
+  tasks:
+  - package:
+      name: "httpd"
+      state: present
+    when: ansible_facts["distribution"] == "CentOS"
+  - package:
+      name: "apache2"
+      state: present
+    when: ansible_facts["distribution"] == "Ubuntu"
+
