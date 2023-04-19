@@ -1,14 +1,17 @@
-- hosts: all
-  gather_facts: true
-  become: true
-  become_method: sudo
+---
+- name: Using a REST API
+  become: false
+  hosts: localhost
+  gather_facts: false
   tasks:
-  - package:
-      name: "httpd"
-      state: present
-    when: ansible_facts["distribution"] == "CentOS"
-  - package:
-      name: "apache2"
-      state: present
-    when: ansible_facts["distribution"] == "Ubuntu"
+    - debug:
+        msg: “Let’s call an API”
 
+    - name: Everyone loves a good Chuck Norris joke
+      uri:
+        url: https://api.chucknorris.io/jokes/random
+        method: GET
+      register: results
+
+    - debug:
+        var: results.json.value
